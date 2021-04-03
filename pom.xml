@@ -28,6 +28,7 @@
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
 				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.4.4</version>
 				<configuration>
 					<mainClass>com.nebula.NebulaApplication</mainClass>
 					<excludes>
@@ -36,6 +37,7 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+					<layout>JAR</layout>
 				</configuration>
 			</plugin>
 		</plugins>

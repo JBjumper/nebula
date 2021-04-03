@@ -1,0 +1,23 @@
+FROM alpine:3.8
+
+WORKDIR /nebula
+
+RUN mkdir -p bin config logs lib && \
+    echo -e "" && \
+    apk --no-cache add python2 py2-setuptools py2-pip tini jq curl bash openjdk8 && \
+    pip install --no-cache-dir xmltodict -i http://mirrors.h3c.com:8080/repository/pip-aliyun/simple --trusted-host mirrors.h3c.com
+
+ADD ./nebula-server/target/nebula-server-0.0.1-SNAPSHOT.jar ./lib/nebula-server.jar
+ADD ./script/start-server.sh ./bin/start-server.sh
+ADD ./script/config/application.yaml ./config/application.yaml
+
+
+# 设置Docker 时间为上海时区
+RUN source /etc/profile && \
+    echo "Asia/shanghai" >> /etc/timezone && \
+    dos2unix config/application.yaml && \
+    dos2unix bin/start-server.sh && \
+    chmod +x bin/start-server.sh
+
+EXPOSE 8888
+ENTRYPOINT ["sh","config/start-server.sh"]
